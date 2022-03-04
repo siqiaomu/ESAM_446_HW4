@@ -5,8 +5,6 @@ from scipy import sparse
 import pytest
 from equations import SoundWaves
 
-import matplotlib.pyplot as plt
-
 waves_const_errors = {32: 0.2, 64: 5e-3, 128: 1e-8}
 @pytest.mark.parametrize('N', [32, 64, 128])
 @pytest.mark.parametrize('dtype', [np.float64, np.complex128])
@@ -36,17 +34,6 @@ def test_SoundWaves_const(N, dtype):
     p.require_grid_space(scales=256//N)
 
     sol = np.loadtxt('waves_const.dat')
-
-    xplotbasis = spectral.Chebyshev(256, interval=(0, 3))
-    xplot = xplotbasis.grid()
-    plt.figure()
-    plt.plot(xplot, p.data)
-    plt.plot(xplot, sol)
-    
-
-
-
-    
 
     error = np.max(np.abs(sol - p.data))
 
@@ -81,16 +68,8 @@ def test_SoundWaves_variable(N, dtype):
     p.require_grid_space(scales=256//N)
 
     sol = np.loadtxt('waves_variable.dat')
-    
-    xplotbasis = spectral.Chebyshev(256, interval=(0, 3))
-    xplot = xplotbasis.grid()
-    plt.figure()
-    plt.plot(xplot, p.data)
-    plt.plot(xplot, sol)
 
     error = np.max(np.abs(sol - p.data))
-    
-    print(error)
 
     assert error < waves_variable_errors[N]
 
